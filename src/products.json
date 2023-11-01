@@ -1,0 +1,20 @@
+[
+	{
+		"id": 1,
+		"title": "producto 1",
+		"description": "producto1",
+		"price": "200",
+		"thumbnail": "http://localhost:8080/images/img1.jpg",
+		"code": "C010",
+		"stock": "20"
+	},
+	{
+		"id": 2,
+		"title": "producto  2",
+		"description": "producto2",
+		"price": "50",
+		"thumbnail": "http://localhost:8080/images/img12.jpg",
+		"code": "C020",
+		"stock": "10"
+	}
+]
