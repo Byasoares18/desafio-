@@ -1,5 +1,5 @@
 import fs from 'fs';
-import {io} from './app.js';
+import {io} from '../../app.js';
 
 
 class ProductManager {

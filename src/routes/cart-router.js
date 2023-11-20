@@ -1,48 +1,59 @@
 import { Router } from 'express';
-import CartManager from '../cartManager.js';
+import CartManager from '../DAO/fileSystem/cartManager.js'
+import CartManagerDB from '../DAO/mongoDB/cartManagerMDB.js';
 
-const router = Router();
-const carts = new CartManager('./carrito.json');
+const router = Router()
 
-router.post('/', (req, res) => {
-  try {
-    const cartList = carts.createCart();
-    res.send({ status: 'Cart created' });
-  } catch (error) {
-    res.status(500).send({ status: 'Error creating cart', error: error.message });
-  }
+const carts= new CartManager('./carrito.json');
+const cartsDB= new CartManagerDB();
+//-------------------------------------------------------------------------------------
+
+router.post('/', (req,res)=>{
+
+try {
+
+const cartList= cartsDB.createCart();
+
+res.send({status:"Cart created"})
+    
+} catch (error) {
+    return error
+}
 });
 
-router.get('/:cid', async (req, res) => {
-  try {
-    const idCart = parseInt(req.params.cid);
-    const cartFound = await carts.getCartById(idCart);
+//-------------------------------------------------------------------------------------
 
-    if (!cartFound) {
-      res.status(400).send({ status: 'Error cart not found' });
-    } else {
-      res.send({ status: cartFound });
+router.get('/:cid', async (req,res)=>{
+try {
+
+const idCart= req.params.cid;
+const cartFound= await cartsDB.getCartById(idCart);
+
+if(!cartFound) return (res.status(400).send({status:"Error cart not founded"}));
+
+return res.send({status:cartFound})
+} catch (error) {
+    
+}
+});
+
+//-------------------------------------------------------------------------------------
+
+router.post('/:cid/product/:pid',async (req,res)=>{
+
+    try{
+        const cid = req.params.cid;
+        const pid = req.params.pid;
+
+        const product = await cartsDB.addProductCart(cid, pid);
+
+        res.send({result:product})
+
+    } catch (err) {
+        res.status(500).send("Error al agregar producto al carrito" + err)
     }
-  } catch (error) {
-    res.status(500).send({ status: 'Error', error: error.message });
-  }
-});
+    
+})
 
-router.post('/:cid/product/:pid', async (req, res) => {
-  try {
-    const cid = parseInt(req.params.cid);
-    const pid = parseInt(req.params.pid);
 
-    const product = await carts.addProductCart(cid, pid);
-
-    if (product === 'Producto not found' || product === 'Cart not found') {
-      res.status(400).send({ status: product });
-    } else {
-      res.send({ result: product });
-    }
-  } catch (error) {
-    res.status(500).send({ status: 'Error adding product to cart', error: error.message });
-  }
-});
-
-export default router;
+export default router

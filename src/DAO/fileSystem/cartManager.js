@@ -1,5 +1,5 @@
 import fs from 'fs';
-import ProductManager from './productManager.js';
+import ProductManager from './productManager.js'
 
 class CartManager{
 
@@ -7,7 +7,7 @@ constructor(path){
     this.path=path
 }
 
-
+//-------------------------------------------------------------------------------------
 async getCarts() {
 
     try {
@@ -18,7 +18,7 @@ async getCarts() {
         return [];
     }
 }
-
+//-------------------------------------------------------------------------------------
 async createCart(){
 
     const carts = await this.getCarts();
@@ -41,7 +41,7 @@ async createCart(){
     }
 }
 
-
+//-------------------------------------------------------------------------------------
   async getCartById(id) {
 
     const cartList= await this.getCarts();
@@ -51,6 +51,7 @@ async createCart(){
     return search
 }
 
+//-------------------------------------------------------------------------------------
 
 async addProductCart(cid,pid){
 
